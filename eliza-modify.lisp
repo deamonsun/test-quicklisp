@@ -1,6 +1,9 @@
-;; ????eliza-chinese æœ‰ä¸ªBUG
-;; å‘ç”Ÿåœ¨(pat-match::use-eliza-rules  '(ä½  å¥½))  /= (use-eliza-rules  '(ä½  å¥½))
-;; å³ä»Žå¤–éƒ¨è°ƒç”¨å‡½æ•°å¾—åˆ°çš„ç»“æžœï¼ˆæ— æ³•åŒ¹é…ï¼‰ä¸ŽåŒ…å†…è°ƒç”¨ä¸åŒã€‚
+;; ????eliza-chinese ÓÐ¸öBUG
+;; ·¢ÉúÔÚ(pat-match::use-eliza-rules  '(Äã ºÃ))  /= (use-eliza-rules  '(Äã ºÃ))
+;; ¼´´ÓÍâ²¿µ÷ÓÃº¯ÊýµÃµ½µÄ½á¹û£¨ÎÞ·¨Æ¥Åä£©Óë°üÄÚµ÷ÓÃ²»Í¬¡£
+;; ·¢ÏÖ(pat-match::rule-pattern (nth 0 pat-match::*eliza-rules*)) £½>
+;; ((PAT-MATCH::?* PAT-MATCH::?X) PAT-MATCH::Äã PAT-MATCH::ºÃ (PAT-MATCH::?* PAT-MATCH::?Y))
+;; Ò²¼´ÓÉÓÚ¸Ã³ÌÐòµÄÄ£Ê½Æ¥Åä»ùÓÚ·ûºÅ¶ÔÏóÊÇ·ñÏàµÈ"eq",µ«ÊÂÊµÉÏ£¬µ±´Ó°üÍâ²¿·ÃÎÊÊ±£¬±¾°üÄÚµÄËùÓÐ·ûºÅ½«±»¼ÓÉÏÇ°×º°üÃû£¬¹ÊÎÞ·¨EQ¡£
 ;;(load "c:/Lisp-Enviroment/packages/eliza.lisp" :external-format :utf8)
 (defpackage #:pat-match
   (:use #:cl)
@@ -38,18 +41,18 @@
 (defun exte-bindings (var val bindings)
 	     (cons (cons var val ) bindings))
 
-;; æ³¨æ„pat-matchçš„ç»“æž„ï¼Œäº‹å®žä¸Šå³åœ¨è¡¨ pattern å’Œinputä¹‹ä¸Šé€’å½’åœ°è°ƒç”¨pat-matchï¼Œä»¥æœ€ç»ˆè¿”å›žbindingsç»“æžœå€¼
-;; æ³¨æ„è¯¥å®šä¹‰çš„ç‰¹åˆ«ä¹‹å¤„ï¼Œåœ¨é€’å½’å½¢å¼ï¼ˆæœ€åŽä¸€å¥ï¼‰çš„ç¬¬ä¸‰ä¸ªå‚æ•°bindingså½¢å‚å¤„ç»™ä»¥ (pat-match (first pattern) (first input) bindings)ä½œä¸ºå…¶ç¬¬ä¸‰ä¸ªå‚æ•°
-;; æ˜¾è§ï¼Œå¯¹äºŽæ­¤ç±»éœ€è¦æ ‘å½¢é€’å½’ä»¥è¿”å›žæŸä¸ªç»“æžœå€¼ï¼ˆå¦‚bindingsï¼‰çš„è¿‡ç¨‹ï¼ˆå¦‚pat-matchï¼‰ï¼Œå°†ç»“æžœå€¼ä½œä¸ºé€’å½’è¿‡ç¨‹çš„å‚æ•°æ˜¯æœ‰å¥½å¤„çš„ï¼Œå› ä¸ºé€’å½’å½¢å¼çš„è¯¥å‚æ•°bindingsä½ç½®å¯åµŒå¥—å¤šå±‚è¿‡ç¨‹pat-matchã€‚è¿™æ ·åšçš„å¥½å¤„æ˜¯å¯ä»¥ç›´æŽ¥å°†bindingsä¼ é€’ç»™ä¸‹ä¸€æ¬¡é€’å½’å¼(pat-match (rest pattern ...))ã€‚ä»¥å®žçŽ°åœ¨æ•´ä¸ªæ ‘ä¸Šçš„é€’å½’ã€‚
-;; æ³¨æ„è¿™ç±»å¤æ‚é€’å½’ä¸Žçº¯ç²¹çš„å°¾é€’å½’ä¹‹é—´çš„åŒºåˆ«ï¼Œæ˜¾ç„¶å¤æ‚é€’å½’ç”±äºŽå°†ç»“æžœå€¼ä½œä¸ºå‚æ•°ï¼Œå…¶é€’å½’è¿‡ç¨‹æ›´æ˜“æŽ§åˆ¶ï¼Œä¸”æ‰§è¡Œè¿‡ç¨‹ä¸­å˜é‡ã€ç»“æžœæ˜¯å¯è§çš„ï¼› è€Œçº¯ç²¹å°¾é€’å½’æ›´ç®€æ´ï¼Œä½†å…¶é€’å½’è¿‡ç¨‹ä¸å¯è§ï¼Œå°±å¦‚SCIPä¹¦æ‰€è¿°ï¼Œåœ¨é€’å½’é“¾æ¡ä¸­å¯èƒ½ä¼šä¸¢å¤±è€Œæ— æ³•è¿½æº¯å…¶è¿‡ç¨‹å’Œä¸­é—´å€¼ã€‚
-;; è€Œcondçš„å‰å‡ ç§æƒ…å†µå³ä¸ºå®šä¹‰åœ¨ç»™å®šä¸‰ç§æƒ…å†µä¸‹å¯¹bindingså€¼çš„æ“ä½œ,1.pattern æ˜¯ä¸€ä¸ªå˜é‡ï¼Œæ­¤æƒ…å†µå¯¹åº”(pat-match (first pattern)...)çš„å¯èƒ½æƒ…å†µï¼› 2.(eql pattern input)æ­¤æƒ…å†µå¯¹åº” (pat-match (first pattern) ...)å’Œ(pat-match (rest pattern) ...)çš„å¯èƒ½æƒ…å†µ 3.(segment-pattern-p pattern) ,æ­¤æƒ…å†µå¯¹åº” (pat-match (rest pattern) ...)çš„ä¸€ç§å¯èƒ½æƒ…å†µ; 4.å…¶ä½™æƒ…å†µè®¤ä¸ºåŒ¹é…å¤±è´¥ï¼Œ(pat-match (first pattern) ...)è¿”å›žFAIL æˆ–è€… (pat-match (rest pattern) ...)è¿”å›žFAIL
+;; ×¢Òâpat-matchµÄ½á¹¹£¬ÊÂÊµÉÏ¼´ÔÚ±í pattern ºÍinputÖ®ÉÏµÝ¹éµØµ÷ÓÃpat-match£¬ÒÔ×îÖÕ·µ»Øbindings½á¹ûÖµ
+;; ×¢Òâ¸Ã¶¨ÒåµÄÌØ±ðÖ®´¦£¬ÔÚµÝ¹éÐÎÊ½£¨×îºóÒ»¾ä£©µÄµÚÈý¸ö²ÎÊýbindingsÐÎ²Î´¦¸øÒÔ (pat-match (first pattern) (first input) bindings)×÷ÎªÆäµÚÈý¸ö²ÎÊý
+;; ÏÔ¼û£¬¶ÔÓÚ´ËÀàÐèÒªÊ÷ÐÎµÝ¹éÒÔ·µ»ØÄ³¸ö½á¹ûÖµ£¨Èçbindings£©µÄ¹ý³Ì£¨Èçpat-match£©£¬½«½á¹ûÖµ×÷ÎªµÝ¹é¹ý³ÌµÄ²ÎÊýÊÇÓÐºÃ´¦µÄ£¬ÒòÎªµÝ¹éÐÎÊ½µÄ¸Ã²ÎÊýbindingsÎ»ÖÃ¿ÉÇ¶Ì×¶à²ã¹ý³Ìpat-match¡£ÕâÑù×öµÄºÃ´¦ÊÇ¿ÉÒÔÖ±½Ó½«bindings´«µÝ¸øÏÂÒ»´ÎµÝ¹éÊ½(pat-match (rest pattern ...))¡£ÒÔÊµÏÖÔÚÕû¸öÊ÷ÉÏµÄµÝ¹é¡£
+;; ×¢ÒâÕâÀà¸´ÔÓµÝ¹éÓë´¿´âµÄÎ²µÝ¹éÖ®¼äµÄÇø±ð£¬ÏÔÈ»¸´ÔÓµÝ¹éÓÉÓÚ½«½á¹ûÖµ×÷Îª²ÎÊý£¬ÆäµÝ¹é¹ý³Ì¸üÒ×¿ØÖÆ£¬ÇÒÖ´ÐÐ¹ý³ÌÖÐ±äÁ¿¡¢½á¹ûÊÇ¿É¼ûµÄ£» ¶ø´¿´âÎ²µÝ¹é¸ü¼ò½à£¬µ«ÆäµÝ¹é¹ý³Ì²»¿É¼û£¬¾ÍÈçSCIPÊéËùÊö£¬ÔÚµÝ¹éÁ´ÌõÖÐ¿ÉÄÜ»á¶ªÊ§¶øÎÞ·¨×·ËÝÆä¹ý³ÌºÍÖÐ¼äÖµ¡£
+;; ¶øcondµÄÇ°¼¸ÖÖÇé¿ö¼´Îª¶¨ÒåÔÚ¸ø¶¨ÈýÖÖÇé¿öÏÂ¶ÔbindingsÖµµÄ²Ù×÷,1.pattern ÊÇÒ»¸ö±äÁ¿£¬´ËÇé¿ö¶ÔÓ¦(pat-match (first pattern)...)µÄ¿ÉÄÜÇé¿ö£» 2.(eql pattern input)´ËÇé¿ö¶ÔÓ¦ (pat-match (first pattern) ...)ºÍ(pat-match (rest pattern) ...)µÄ¿ÉÄÜÇé¿ö 3.(segment-pattern-p pattern) ,´ËÇé¿ö¶ÔÓ¦ (pat-match (rest pattern) ...)µÄÒ»ÖÖ¿ÉÄÜÇé¿ö; 4.ÆäÓàÇé¿öÈÏÎªÆ¥ÅäÊ§°Ü£¬(pat-match (first pattern) ...)·µ»ØFAIL »òÕß (pat-match (rest pattern) ...)·µ»ØFAIL
 
 (defun pat-match (pattern input &optional (bindings no-bindings))
   "Match pattern against input in the context of the bindings"
-  (cond ((eq bindings fail) fail)
+  (cond ((equal bindings fail) fail)
         ((variable-p pattern)
          (match-variable pattern input bindings))
-        ((eql pattern input) bindings)
+        ((equal pattern input) bindings)
         ((segment-pattern-p pattern)                ; ***
          (segment-match pattern input bindings))    ; ***
         ((and (consp pattern) (consp input)) 
@@ -80,7 +83,7 @@
               (let ((b2 (pat-match pat (subseq input pos) bindings)))
                 ;; If this match failed, try another longer one
                 ;; If it worked, check that the variables match
-                (if (eq b2 fail)
+                (if (equal b2 fail)
                     (segment-match pattern input bindings (+ pos 1))
                     (match-variable var (subseq input 0 pos) b2))))))))
 
@@ -103,7 +106,7 @@
                           (match-variable var (subseq input 0 pos)
                                           bindings))))
                 ;; If this match failed, try another longer one
-                (if (eq b2 fail)
+                (if (equal b2 fail)
                     (segment-match pattern input bindings (+ pos 1))
                     b2)))))))
 
@@ -338,7 +341,7 @@
 
 (defun switch-viewpoint (words)
 	     (sublis '((I . you) (you . i) (me . you) (am . are)
-		       (æˆ‘ . ä½ ) (æˆ‘ä»¬ . ä½ ä»¬) (ä½  . æˆ‘) (ä½ ä»¬ . æˆ‘ä»¬  ))
+		       (ÎÒ . Äã) (ÎÒÃÇ . ÄãÃÇ) (Äã . ÎÒ) (ÄãÃÇ . ÎÒÃÇ  ))
 		     words))
 
 (defun print-eliza-response (the-list)
@@ -348,73 +351,72 @@
 
 (defun eliza-chinese ()
 	       (loop 
-		    (print 'è‰¾ä¸½èŽŽ>)
+		    (print '°¬ÀöÉ¯>)
 		  (print-eliza-response
 		   (or (flatten (use-eliza-rules 
 				   (mapcar #'read-from-string
 					   (cl-ppcre:split "\\s*"  
 							   (let ((ss  (read-line *query-io* )))
-							     (if (equal ss "å†è§") (return)
+							     (if (equal ss "ÔÙ¼û") (return)
 								 ss))))))
-		       '(æ— è¯å¯è¯´)))))
+		       '(ÎÞ»°¿ÉËµ)))))
 
 (defparameter *eliza-rules*
-	     '((((?* ?x) ä½  å¥½ (?* ?y))      
-		(ä½  å¥½ ã€‚ å¾ˆ é«˜ å…´ è§ åˆ° ä½  ))
-	       (((?* ?x ) å å­— (?* ?y))
-		(æˆ‘å¯¹åå­—ä¸æ„Ÿå…´è¶£))
-	       (((?* ?x) æŠ± æ­‰ (?* ?y))
-		(è¯·åˆ«é“æ­‰) (æ²¡å¿…è¦é“æ­‰)
-		(ä½ é“æ­‰æ—¶æ˜¯æ€Žä¹ˆæƒ³çš„))
-	       (((?* ?x) æˆ‘ è®° å¾— (?* ?y))
-		(ä½ ç»å¸¸æƒ³èµ· ?y å—)
-		(æƒ³èµ· ?y æœ‰ä»€ä¹ˆæ„ä¹‰å—)
-		(ä½ è¿˜è®°å¾—ä»€ä¹ˆ)
-		(ä¸ºä»€ä¹ˆä½ çŽ°åœ¨ä¼šæƒ³èµ· ?y)
-		(?y å’Œæˆ‘æœ‰ä»€ä¹ˆå…³ç³»))
-	       (((?* ?x) ä½  è®° å¾— å— (?* ?y))
-		(ä½ è§‰å¾—æˆ‘ä¼šå¿˜è®° ?y å—)
-		(ä½ æ˜¯è¯´ ?y ?))
-	       (((?* ?x) å¦‚ æžœ (?* ?y))
-		(ä½ çœŸçš„è®¤ä¸º ?y)
-		(ä½ å¸Œæœ› ?y å—)
-		(çœŸçš„å—? å¦‚æžœ ?y))
-	       (((?* ?x) æˆ‘ å¹» æƒ³ (?* ?y))	       
-		(çœŸçš„å—ï¼Ÿ ?y)
-		(ä½ æ¸…é†’çš„æ—¶å€™ä¼šæƒ³è±¡ ?y å—ï¼Ÿ))
-	       (((?* ?x) æ¢¦ (?* ?y))
-		(è¿™äº›æ¢¦æš—ç¤ºä½ ä»€ä¹ˆï¼Ÿ)(ä½ ç»å¸¸åšæ¢¦å—ï¼Ÿ)
-		(ä½ æ¢¦é‡Œå‡ºçŽ°å“ªäº›äººï¼Ÿ))
-	       (((?* ?x) æˆ‘ å¦ˆ (?* ?y))
-		(ä½ å®¶é‡Œè¿˜æœ‰ä»€ä¹ˆäººï¼Ÿ)
-		(å¤šèŠèŠä½ çš„å®¶äºº))
-	       (((?* ?x) æˆ‘ çˆ¸ (?* ?y))
-		(ä»–å¯¹ä½ å½±å“å¾ˆå¤šå—ï¼Ÿ))
-	       (((?* ?x) æˆ‘ æƒ³ è¦ (?* ?y))
-		(ä½ ä¸ºä»€ä¹ˆæƒ³è¦ ?y)
-		(æƒ³è±¡ä½ é©¬ä¸Šå°±è¦ ?y))
-	       (((?* ?x) å›  ä¸º (?* ?y))
-		(é‚£æ˜¯çœŸæ­£çš„åŽŸå› å—ï¼Ÿ))
-	       (((?* ?x) ä½  æ˜¯ ä¸ æ˜¯ (?* ?y))
-		(ä¹Ÿè®¸æˆ‘æ˜¯ ?y))
-	       (((?* ?x) æˆ‘ ä¸ èƒ½ (?* ?y))
-		(ä¹Ÿè®¸ä½ çŽ°åœ¨å·²ç»å¯ä»¥ ?y))
-	       (((?* ?x) æˆ‘ è§‰ å¾— (?* ?y))
-		(ä½ ç»å¸¸è§‰å¾— ?y å—ï¼Ÿ))
-	       (((?* ?x) æˆ‘ (?* ?y) ä½   (?* ?z))
-		(ä¹Ÿè®¸ä½ æƒ³è±¡æˆ‘ä»¬å½¼æ­¤ ?y ))
-	       (((?* ?x) ä½  å¹² å— ä¸ (?* ?y))
-		(ä½ è‡ªå·±ä¼š ?y å—ï¼Ÿ))
-	       (((?* ?x) ä¸ (?* ?y))
-		(ä¸ºä»€ä¹ˆä¸ï¼Ÿ)(ä½ æœ‰ç‚¹æ¶ˆæžäº†))
+	     '((((?* ?x) "Äã" "ºÃ" (?* ?y))      
+		("ÄãºÃ¡£ºÜ¸ßÐË¼ûµ½Äã" ))
+	       (((?* ?x ) "Ãû" "×Ö" (?* ?y))
+		("ÎÒ¶ÔÃû×Ö²»¸ÐÐËÈ¤"))
+	       (((?* ?x) "±§" "Ç¸" (?* ?y))
+		("Çë±ðµÀÇ¸") ("Ã»±ØÒªµÀÇ¸")
+		("ÄãµÀÇ¸Ê±ÊÇÔõÃ´ÏëµÄ"))
+	       (((?* ?x) "ÎÒ" "¼Ç" "µÃ" (?* ?y))
+		("Äã¾­³£ÏëÆð" ?y "Âð")
+		("ÏëÆð" ?y "ÓÐÊ²Ã´ÒâÒåÂð")
+		("Äã»¹¼ÇµÃÊ²Ã´")
+		("ÎªÊ²Ã´ÄãÏÖÔÚ»áÏëÆð" ?y)
+		(?y "ºÍÎÒÓÐÊ²Ã´¹ØÏµ"))
+	       (((?* ?x) "Äã" "¼Ç" "µÃ" "Âð" (?* ?y))
+		("Äã¾õµÃÎÒ»áÍü¼Ç" ?y "Âð")
+		("ÄãÊÇËµ" ?y "?"))
+	       (((?* ?x) "Èç" "¹û" (?* ?y))
+		("ÄãÕæµÄÈÏÎª" ?y)
+		("ÄãÏ£Íû" ?y "Âð")
+		("ÕæµÄÂð?" "Èç¹û" ?y))
+	       (((?* ?x) "ÎÒ" "»Ã" "Ïë" (?* ?y))	       
+		("ÕæµÄÂð£¿" ?y)
+		("ÄãÇåÐÑµÄÊ±ºò»áÏëÏó" ?y "Âð£¿"))
+	       (((?* ?x) "ÃÎ" (?* ?y))
+		("ÕâÐ©ÃÎ°µÊ¾ÄãÊ²Ã´£¿")("Äã¾­³£×öÃÎÂð£¿")
+		("ÄãÃÎÀï³öÏÖÄÄÐ©ÈË£¿"))
+	       (((?* ?x) "ÎÒ" "Âè" (?* ?y))
+		("Äã¼ÒÀï»¹ÓÐÊ²Ã´ÈË£¿")
+		("¶àÁÄÁÄÄãµÄ¼ÒÈË"))
+	       (((?* ?x) "ÎÒ" "°Ö" (?* ?y))
+		("Ëû¶ÔÄãÓ°ÏìºÜ¶àÂð£¿"))
+	       (((?* ?x) "ÎÒ" "Ïë" "Òª" (?* ?y))
+		("ÄãÎªÊ²Ã´ÏëÒª" ?y)
+		("ÏëÏóÄãÂíÉÏ¾ÍÒª" ?y))
+	       (((?* ?x) "Òò" "Îª" (?* ?y))
+		("ÄÇÊÇÕæÕýµÄÔ­ÒòÂð£¿"))
+	       (((?* ?x) "Äã" "ÊÇ" "²»" "ÊÇ" (?* ?y))
+		("Ò²ÐíÎÒÊÇ" ?y))
+	       (((?* ?x) "ÎÒ" "²»" "ÄÜ" (?* ?y))
+		("Ò²ÐíÄãÏÖÔÚÒÑ¾­¿ÉÒÔ" ?y))
+	       (((?* ?x) "ÎÒ" "¾õ" "µÃ" (?* ?y))
+		("Äã¾­³£¾õµÃ" ?y "Âð£¿"))
+	       (((?* ?x) "ÎÒ" (?* ?y) "Äã"  (?* ?z))
+		("Ò²ÐíÄãÏëÏóÎÒÃÇ±Ë´Ë" ?y ))
+	       (((?* ?x) "Äã" "¸É" "Âð" "²»" (?* ?y))
+		("Äã×Ô¼º»á" ?y "Âð£¿"))
+	       (((?* ?x) "²»" (?* ?y))
+		("ÎªÊ²Ã´²»£¿")("ÄãÓÐµãÏû¼«ÁË"))
 	       (((?* ?x))
-		(å¾ˆæœ‰è¶£)(æˆ‘æƒ³æˆ‘è¿˜ä¸å¤Ÿäº†è§£ä½ )
-		(é‚£å¯¹ä½ æ¥è¯´æ„å‘³ç€ä»€ä¹ˆï¼Ÿ)(æŽ¥ç€è¯´)(ç»§ç»­å§)
-		(ä½ å¯¹è¿™äº›æ„Ÿå—å¾ˆæ·±å—ï¼Ÿ))
+		("ºÜÓÐÈ¤")("ÎÒÏëÎÒ»¹²»¹»ÁË½âÄã")
+		("ÄÇ¶ÔÄãÀ´ËµÒâÎ¶×ÅÊ²Ã´£¿")("½Ó×ÅËµ")("¼ÌÐø°É")
+		("Äã¶ÔÕâÐ©¸ÐÊÜºÜÉîÂð£¿"))
 		))
 
 
 (defun chat1 (str)
-	     (flatten (use-eliza-rules 
-				   (mapcar #'read-from-string
+	(apply #'str:concat       (flatten (use-eliza-rules 
 					   (cl-ppcre:split "\\s*"  str)))))
