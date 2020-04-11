@@ -18,7 +18,7 @@
 
 ;; 本命令的执行顺序是否对其效果造成影响，似乎必须在以下其他命令前执行本命令才有效。
 (hunchentoot:define-easy-handler (test-handler :uri "/test")
-    ((name :init-form "Pumpkin"))
+     ((name :init-form "Pumpkin"))
   (format nil "<!doctype html><title>Common Lisp Recipes</title><body>Yo, ~A!  The Lisp time is ~A.</body>"
 	  name (get-universal-time)))
 
@@ -40,7 +40,7 @@
 ;;               hunchentoot:*dispatch-table*)
 
 
-(define-easy-handler (easy-demo :uri "/hunchentoot/test/foo-demo.html"
+(define-easy-handler (lisp-demo :uri "/hunchentoot/test/lisp-demo.html"
                                 :default-request-type :post)
     (first-name )
   (with-html
@@ -63,7 +63,7 @@
 ;      (info-table first-name)
       ))))
 
-(define-easy-handler (easy-demo :uri "/hunchentoot/test/foo-demo.html"
+(define-easy-handler (foo-demo :uri "/hunchentoot/test/foo-demo.html"
                                 :default-request-type :post)
     (first-name )
   (with-html
@@ -83,7 +83,7 @@
              (:td "计算结果:")
              (:td (:input :type :text
                    :name "first-name"
-                   :value (pat-match::chat first-name))))
+                   :value (pat-match:chat1 first-name))))
 		   
             (:tr
              (:td :colspan 2
